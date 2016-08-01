@@ -39,6 +39,11 @@ module GrapeEntityMatchers
         self
       end
 
+      def values(values)
+        @values = values
+        self
+      end
+
       def with(documentation)
         @documentation = documentation
         self
@@ -63,7 +68,8 @@ module GrapeEntityMatchers
               type: @type,
               desc: @desc,
               required: @required,
-              default: @default
+              default: @default,
+              values: @values
             }.compact
       end
 

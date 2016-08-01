@@ -7,7 +7,8 @@ describe GrapeEntityMatchers::DocumentMatcher do
       type: String,
       desc: 'Some string',
       default: 'xyz',
-      required: false
+      required: false,
+      values: ['abc', 'xyz']
     }
   end
   before(:all) do
@@ -16,7 +17,8 @@ describe GrapeEntityMatchers::DocumentMatcher do
         type: String,
         desc: 'Some string',
         default: 'xyz',
-        required: false
+        required: false,
+        values: ['abc', 'xyz']
       }
       expose :no_doc
     end
@@ -30,9 +32,19 @@ describe GrapeEntityMatchers::DocumentMatcher do
 
   context "ensure individual keys of documentation" do
     it { is_expected.to document(:str).type(String) }
+    it { is_expected.not_to document(:str).type(Fixnum) }
+
     it { is_expected.to document(:str).desc('Some string') }
+    it { is_expected.not_to document(:str).desc('Some other string') }
+
     it { is_expected.to document(:str).default('xyz') }
+    it { is_expected.not_to document(:str).default('abc') }
+
     it { is_expected.to document(:str).required(false) }
+    it { is_expected.not_to document(:str).required(true) }
+
+    it { is_expected.to document(:str).values(['abc', 'xyz']) }
+    it { is_expected.not_to document(:str).values(['foo', 'bar']) }
   end
 
   context "ensure a combination of keys of documentation" do
@@ -45,9 +57,5 @@ describe GrapeEntityMatchers::DocumentMatcher do
 
   context "ensure that a specific documentation is not used" do
     it { is_expected.to_not document(:str).with(type: String, required: false) }
-  end
-
-  context "ensure that specific falues are not used" do
-    it { is_expected.to_not document(:str).desc('a string') }
   end
 end
