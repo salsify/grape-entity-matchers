@@ -24,6 +24,11 @@ module GrapeEntityMatchers
         self
       end
 
+      def types(types_value)
+        @types = types_value
+        self
+      end
+
       def required(required_value)
         @required = required_value
         self
@@ -66,6 +71,7 @@ module GrapeEntityMatchers
         @documentation ||
             {
               type: @type,
+              types: @types,
               desc: @desc,
               required: @required,
               default: @default,
