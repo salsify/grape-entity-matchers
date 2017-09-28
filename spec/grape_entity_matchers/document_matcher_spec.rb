@@ -5,6 +5,7 @@ describe GrapeEntityMatchers::DocumentMatcher do
   let(:documentation) do
     {
       type: String,
+      types: [String, Integer],
       desc: 'Some string',
       default: 'xyz',
       required: false,
@@ -15,6 +16,7 @@ describe GrapeEntityMatchers::DocumentMatcher do
     class TestEntity < Grape::Entity
       expose :str, documentation: {
         type: String,
+        types: [String, Integer],
         desc: 'Some string',
         default: 'xyz',
         required: false,
@@ -33,6 +35,9 @@ describe GrapeEntityMatchers::DocumentMatcher do
   context "ensure individual keys of documentation" do
     it { is_expected.to document(:str).type(String) }
     it { is_expected.not_to document(:str).type(Fixnum) }
+
+    it { is_expected.to document(:str).types([String, Integer])}
+    it { is_expected.not_to document(:str).types([String, Integer, Fixnum]) }
 
     it { is_expected.to document(:str).desc('Some string') }
     it { is_expected.not_to document(:str).desc('Some other string') }
